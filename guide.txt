@@ -1,0 +1,11 @@
+open cmd as an administrator.
+Then make a dedicated folder for this app.
+In that folder give commands:
+
+pip install pipenv
+
+pipenv shell
+
+pipenv install tk pyinstaller tkmessagebox
+
+Make files part_manager.py and db.py
