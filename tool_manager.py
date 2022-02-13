@@ -1,8 +1,24 @@
+from os import linesep
 from tkinter import *
+
+def get_item_list():
+    print('get list')
+
+def clear_fields():
+    print('cleared')
+
+def remove():
+    print('removed')
+
+def add_new():
+    print('added new')
+
+def edit():
+    print('updated')
 
 app = Tk()
 app.title('Kalustoluettelo')
-app.geometry('700x500')
+app.geometry('650x550')
 
 # Tavaralista
 tool_list = Listbox(app, width=100, height=20, border=1)
@@ -15,14 +31,20 @@ tool_list.configure(yscrollcommand = scrollbar.set)
 scrollbar.configure(command=tool_list.yview)
 
 # Napit
-add_btn = Button(app, text='Luo uusi', width=12)
-add_btn.grid(row=11, column=2)
+clr_btn = Button(app, text='Tyhjennä kentät', width=12, command=clear_fields)
+clr_btn.grid(row=12, column=1)
 
-add_btn = Button(app, text='Tallenna', width=12)
-add_btn.grid(row=11, column=3)
+add_btn = Button(app, text='Luo uusi', width=12, command=add_new)
+add_btn.grid(row=12, column=2)
 
-add_btn = Button(app, text='Poista', width=12)
-add_btn.grid(row=11, column=4)
+add_btn = Button(app, text='Tallenna', width=12, command=edit)
+add_btn.grid(row=12, column=3)
+
+add_btn = Button(app, text='Poista', width=12, command=remove)
+add_btn.grid(row=12, column=0)
+
+separator = Label(app, text='____________________________________________________', font=('bold', 14), pady=10)
+separator.grid(row=11, column=0, columnspan=5)
 
 # Tavara
 tool_text = StringVar()
@@ -67,4 +89,5 @@ btime_entry = Entry(app, textvariable=btime_text)
 btime_entry.grid(row=10, column=1, sticky=W)
 
 # Start app
+get_item_list()
 app.mainloop()
