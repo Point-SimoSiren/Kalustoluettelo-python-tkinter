@@ -8,4 +8,14 @@ pipenv shell
 
 pipenv install tk pyinstaller tkmessagebox
 
-Make files part_manager.py and db.py
+Make files part_manager.py and db.py like in this repo
+
+Copy code to those empty files from similar files in this repository
+
+Uncomment db.py commented section in the end of the file
+
+Run command: python db.py
+
+Comment those same lines back again on db.py
+
+Run program with command: python tool_manager.py
