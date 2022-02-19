@@ -1,3 +1,4 @@
+from functools import partial
 import sqlite3
 
 class Database:
@@ -14,4 +15,18 @@ class Database:
         return rows
     
     def insert(self, name, price, timebought, shop, borrowedby, timeborrowed):
-        self.cur.execute("INSERT INTO items VALUES (NULL, ?, ?, ?, ?, ?, ?)")
+        self.cur.execute("INSERT INTO items VALUES (NULL, ?, ?, ?, ?, ?, ?)", (name, price,
+        timebought, shop, borrowedby, timeborrowed ))
+        self.conn.commit()
+    
+    def remove(self, id):
+        ("DELETE FROM items WHERE id=?", (id,))
+        self.conn.commit()
+
+    def update(self, id, name, price, timebought, shop, borrowedby, timeborrowed):
+        self.cur.execute("UPDATE items SET name = ?, price = ?, timebought = ?, shop = ?, borrowedby = ?, timeborrowed = ? \
+        WHERE id = ?", (name, price, timebought, shop, borrowedby, timeborrowed, id ))
+        self.conn.commit()
+
+    def __del__(self):
+        self.conn.close()
