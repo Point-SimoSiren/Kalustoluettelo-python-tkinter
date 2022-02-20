@@ -1,5 +1,3 @@
-from asyncio.windows_events import NULL
-import string
 from tkinter import *
 from tkinter import messagebox
 from db import Database
@@ -22,19 +20,22 @@ def clear_fields():
 
 # Kun listalta valitaan jokin tavara
 def select_item(event):
-    # Haetaan valitun tavaran tiedot
-    global selected_item
-    index = tool_list.curselection()[0]
-    selected_item = tool_list.get(index)
-    
-    # Tuodaan valitun tavaran tiedot syöte kenttiin
-    clear_fields()
-    tool_entry.insert(END, selected_item[1])
-    price_entry.insert(END, selected_item[2])
-    time_entry.insert(END, selected_item[3])
-    shop_entry.insert(END, selected_item[4])
-    borrow_entry.insert(END, selected_item[5])
-    btime_entry.insert(END, selected_item[6])
+    try:
+        # Haetaan valitun tavaran tiedot
+        global selected_item
+        index = tool_list.curselection()[0]
+        selected_item = tool_list.get(index)
+        
+        # Tuodaan valitun tavaran tiedot syöte kenttiin
+        clear_fields()
+        tool_entry.insert(END, selected_item[1])
+        price_entry.insert(END, selected_item[2])
+        time_entry.insert(END, selected_item[3])
+        shop_entry.insert(END, selected_item[4])
+        borrow_entry.insert(END, selected_item[5])
+        btime_entry.insert(END, selected_item[6])
+    except IndexError:
+        pass
         
 
 def remove():
