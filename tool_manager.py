@@ -1,9 +1,11 @@
-from concurrent.futures import process
+from asyncio.windows_events import NULL
+import string
 from tkinter import *
 from tkinter import messagebox
 from db import Database
 
 db = Database("tools.db")
+global selected_item
 
 def get_item_list():
     tool_list.delete(0, END)
@@ -11,21 +13,52 @@ def get_item_list():
         tool_list.insert(END, row)
         
 def clear_fields():
-    print('clr')
+    tool_entry.delete(0, END)
+    price_entry.delete(0, END)
+    time_entry.delete(0, END)
+    shop_entry.delete(0, END)
+    borrow_entry.delete(0, END)
+    btime_entry.delete(0, END)
+
+# Kun listalta valitaan jokin tavara
+def select_item(event):
+    # Haetaan valitun tavaran tiedot
+    global selected_item
+    index = tool_list.curselection()[0]
+    selected_item = tool_list.get(index)
+    
+    # Tuodaan valitun tavaran tiedot syöte kenttiin
+    clear_fields()
+    tool_entry.insert(END, selected_item[1])
+    price_entry.insert(END, selected_item[2])
+    time_entry.insert(END, selected_item[3])
+    shop_entry.insert(END, selected_item[4])
+    borrow_entry.insert(END, selected_item[5])
+    btime_entry.insert(END, selected_item[6])
+        
 
 def remove():
-    print('removed')
+    if messagebox.askokcancel("Poisto", f"Valitse ok jos todella haluat poistaa tavaran: {selected_item[1]}") == True:
+        db.remove(selected_item[0])
+        clear_fields()
+        get_item_list()
+
 
 def add_new():
     if tool_text.get() == '':
         messagebox.showerror('Virhe', 'Tavaran nimi on pakollinen tieto.')
     else:
         db.insert(tool_text.get(), price_text.get(), time_text.get(), shop_text.get(), borrow_text.get(), btime_text.get())
+        clear_fields()
         get_item_list()
 
-def edit():
-    print('updated')
 
+def edit():
+    db.update(selected_item[0], tool_text.get(), price_text.get(), time_text.get(), shop_text.get(), borrow_text.get(), btime_text.get())
+    get_item_list()
+
+
+### Sovellusikkuna ###
 app = Tk()
 app.title('Kalustoluettelo')
 app.geometry('650x550')
@@ -34,6 +67,8 @@ app.geometry('650x550')
 ### Tavaralista ###
 tool_list = Listbox(app, width=100, height=20, border=1)
 tool_list.grid(column=0, row=0, columnspan=5, rowspan=6, pady=20, padx=10)
+tool_list.bind('<<ListboxSelect>>', select_item)
+
 
 scrollbar = Scrollbar(app)
 scrollbar.grid(row=0, column=5)
